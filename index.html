@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>JSONEditor | Synchronize two editors</title>
+
+  <link href="dist/jsoneditor.css" rel="stylesheet" type="text/css">
+  <script src="dist/jsoneditor.js"></script>
+
+  <style type="text/css">
+    body {
+      font-family: sans-serif;
+    }
+
+    #jsoneditor1,
+    #jsoneditor2 {
+      width: 600px;
+      height: 600px;
+      margin-right: 40px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+<!--<p>-->
+<!--  Keep two editors synchronized using <code>onChangeText</code> and <code>updateText</code>.-->
+<!--</p>-->
+<!--<p>-->
+<!--  This can be done too with <code>onChangeJSON</code> and <code>update</code>, which can only be used in-->
+<!--  modes <code>tree</code>, <code>form</code> (and <code>view</code>).-->
+<!--</p>-->
+
+<!--<p>-->
+<!--  Switch editor mode using the mode box.-->
+<!--  Note that the mode can be changed programmatically as well using the method-->
+<!--  <code>editor.setMode(mode)</code>, try it in the console of your browser.-->
+<!--</p>-->
+<div id="jsoneditor1"></div>
+<div id="jsoneditor2"></div>
+
+<script>
+  // create editor 1
+   const options = {
+    mode: 'tree',
+    modes: ['code', 'form', 'text', 'tree', 'view', 'preview'], // allowed modes
+    onModeChange: function (newMode, oldMode) {
+      console.log('Mode switched from', oldMode, 'to', newMode)
+    }
+  }
+
+  const  editor1 = new JSONEditor(document.getElementById('jsoneditor1'), {
+    onChangeText: function (jsonString) {
+      editor2.updateText(jsonString)
+    },
+    mode: 'code',
+    modes: ['code', 'form', 'text', 'tree', 'view', 'preview'], // allowed modes
+    onModeChange: function (newMode, oldMode) {
+      console.log('Mode switched from', oldMode, 'to', newMode)
+    }
+  })
+
+  // create editor 2
+  const  editor2 = new JSONEditor(document.getElementById('jsoneditor2'), {
+    onChangeText: function (jsonString) {
+      editor1.updateText(jsonString)
+    },
+    mode: 'form',
+    modes: ['code', 'form', 'text', 'tree', 'view', 'preview'], // allowed modes
+    onModeChange: function (newMode, oldMode) {
+      console.log('Mode switched from', oldMode, 'to', newMode)
+    }
+  })
+
+  // set initial data in both editors
+  // const  json = {
+  //   'array': [1, 2, 3],
+  //   'boolean': true,
+  //   'null': null,
+  //   'number': 123,
+  //   'object': {'a': 'b', 'c': 'd'},
+  //   'string': 'Hello World'
+  // }
+  // editor1.set(json)
+  // editor2.set(json)
+</script>
+</body>
+</html>
+
